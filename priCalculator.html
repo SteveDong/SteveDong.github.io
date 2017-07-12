@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+*Free for All Features*
+Secret Photo All in One help you hide your photos/video/Contact behind a calculator. What other people can see is just an ordinary calculator. You can access your private world by entering your password on the calculator.
+
+Features:
+- Discrete app icon
+- Import Photo/Video from Camera Roll
+- Full screen photo viewer. Multi-touch gestures: zoom and swipe.
+- Share via Email or MMS
+- Full screen video player.
+- Support creating custom album.
+- Share photos with other peoples.
+- Fast calculator.
+- Automatically move to calculator when the app in background.
+- Please press % to confirm the password.
+
+Any problems or suggestions, please contact us on jackzheng634@gmail.com – we’d love to hear your feedback.
+
+
+秘密照片一体化帮助您隐藏您的照片/视频/联系计算器后面。 其他人可以看到只是一个普通的计算器。 您可以通过在计算器上输入密码来访问您的私人世界。
+
+特征：
+- 从相机胶卷导入照片/视频
+- 全屏照片查看器。 多点触控手势：放大和滑动。
+- 通过电子邮件或彩信分享
+- 全屏视频播放器
+- 支持创建自定义相册。
+- 与其他人分享照片。
+- 快速计算器
+- 应用程序在后台自动移动到计算器。
+- 请按％确认密码。
+
+任何问题或建议，请通过jackzheng634@gmail.com与我们联系 - 我们很乐意听到您的反馈。
+
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><em>Free for All Features</em>
+Secret Photo All in One help you hide your photos/video/Contact behind a calculator. What other people can see is just an ordinary calculator. You can access your private world by entering your password on the calculator.</p>
+
+<p>Features:
+- Discrete app icon
+- Import Photo/Video from Camera Roll
+- Full screen photo viewer. Multi-touch gestures: zoom and swipe.
+- Share via Email or MMS
+- Full screen video player.
+- Support creating custom album.
+- Share photos with other peoples.
+- Fast calculator.
+- Automatically move to calculator when the app in background.
+- Please press % to confirm the password.</p>
+
+<p>Any problems or suggestions, please contact us on jackzheng634@gmail.com – we’d love to hear your feedback.</p>
+
+<p>秘密照片一体化帮助您隐藏您的照片/视频/联系计算器后面。 其他人可以看到只是一个普通的计算器。 您可以通过在计算器上输入密码来访问您的私人世界。</p>
+
+<p>特征：
+- 从相机胶卷导入照片/视频
+- 全屏照片查看器。 多点触控手势：放大和滑动。
+- 通过电子邮件或彩信分享
+- 全屏视频播放器
+- 支持创建自定义相册。
+- 与其他人分享照片。
+- 快速计算器
+- 应用程序在后台自动移动到计算器。
+- 请按％确认密码。</p>
+
+<p>任何问题或建议，请通过jackzheng634@gmail.com与我们联系 - 我们很乐意听到您的反馈。</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "priCalculator.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
